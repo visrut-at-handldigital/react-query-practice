@@ -18,6 +18,10 @@ app.get("/todos", (req, res) => {
 
 app.post("/todos", (req, res) => {
   const newItem = req.body;
+
+  console.log('req.body', req.body)
+  console.log('newItem', newItem)
+
   todos.push({ id: todos.length + 1, ...newItem });
   res.status(201).json(newItem);
 });

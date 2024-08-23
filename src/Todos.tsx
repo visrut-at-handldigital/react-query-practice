@@ -9,7 +9,7 @@ function Todos() {
   });
 
   return (
-    <section className="flex flex-col items-center justify-center h-screen gap-y-4">
+    <section>
       {isLoading && (
         <span className="loading loading-spinner loading-lg"></span>
       )}
