@@ -1,0 +1,18 @@
+pnpm create vite react-query-practice --template react-ts
+pnpm i
+pnpm install @tanstack/react-query
+pnpm add @tanstack/react-query-devtools
+pnpm install -D tailwindcss postcss autoprefixer
+pnpm tailwindcss init -p
+pnpm add -D daisyui@latest
+
+pnpm i dotenv
+
+
+npm install express
+pnpm i @types/express -D
+pnpm i cors
+
+
+node server/app.js
+pnpm dev

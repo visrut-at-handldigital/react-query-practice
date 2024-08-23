@@ -3,14 +3,16 @@ type Todo = {
   name: string;
 };
 
+const API_BASE_URL = process.env.API_BASE_URL;
+
 const getTodos = async (): Promise<Todo[]> => {
-  const res = await fetch("http://localhost:5000/todos");
+  const res = await fetch(`${API_BASE_URL}/todos`);
   const data = await res.json();
   return data;
 };
 
 const createTodo = async (todo: string): Promise<Todo> => {
-  const res = await fetch("http://localhost:5000/todos", {
+  const res = await fetch(`${API_BASE_URL}/todos`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
