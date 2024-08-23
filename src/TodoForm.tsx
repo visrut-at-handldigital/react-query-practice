@@ -1,32 +1,44 @@
 import { FormEvent, useRef } from "react";
 import { createTodo } from "./api";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function TodoForm() {
   const todoInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
 
-  const addTodo = async (e: FormEvent) => {
-    e.preventDefault();
+  const todoMutation = useMutation({
+    mutationKey: ["todoMutation"],
+    mutationFn: async (event: FormEvent) => {
+      event.preventDefault();
 
-    if (!todoInputRef.current) {
-      return;
-    }
+      if (!todoInputRef.current) {
+        throw new Error("Something went wrong");
+      }
 
-    const todo = todoInputRef.current?.value ?? "";
-    const createdTodo = await createTodo(todo);
+      const todo = todoInputRef.current?.value ?? "";
 
-    if (createdTodo.name === todo) {
-      queryClient.invalidateQueries({
-        queryKey: ["todos"],
-      });
-    }
+      const data = await createTodo(todo);
 
-    todoInputRef.current.value = "";
-  };
+      if (data.name) {
+        todoInputRef.current.value = "";
+      }
+
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data.name) {
+        queryClient.invalidateQueries({
+          queryKey: ["todos"],
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   return (
-    <form method="POST" onSubmit={addTodo}>
+    <form method="POST" onSubmit={todoMutation.mutate}>
       <input
         autoFocus
         type="text"

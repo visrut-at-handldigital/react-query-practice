@@ -20,6 +20,11 @@ const createTodo = async (todo: string): Promise<Todo> => {
     }),
   });
 
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.message);
+  }
+
   const data = await res.json();
 
   return data;

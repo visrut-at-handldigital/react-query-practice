@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 
+const badWords = ['sleep', 'play', 'games', 'movie', 'game', 'movies'];
+
 const app = express();
 const port = 5000;
 
@@ -17,13 +19,19 @@ app.get("/todos", (req, res) => {
 });
 
 app.post("/todos", (req, res) => {
-  const newItem = req.body;
+  /**
+   * @type {string}
+   */
+  const newTodo = req.body;
 
-  console.log('req.body', req.body)
-  console.log('newItem', newItem)
+  if(badWords.includes(newTodo.name.trim())) {
+    return res.status(400).json({
+      message: "Don't use bad word"
+    })
+  }
 
-  todos.push({ id: todos.length + 1, ...newItem });
-  res.status(201).json(newItem);
+  todos.push({ id: todos.length + 1, ...newTodo });
+  res.status(201).json(newTodo);
 });
 
 app.listen(port, () => {
