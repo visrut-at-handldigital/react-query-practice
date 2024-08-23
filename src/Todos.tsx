@@ -1,18 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
 import { getTodos } from "./api";
 
+import { useQuery } from "@tanstack/react-query";
+
 function Todos() {
-  const { data: todos, isFetching } = useQuery({
+  const { data: todos, isLoading } = useQuery({
     queryKey: ["todos"],
     queryFn: getTodos,
   });
 
-  console.log(`isFetching: ${isFetching}, todos?.length: ${todos?.length}`);
-
   return (
-    <section>
+    <section className="flex flex-col items-center justify-center h-screen gap-y-4">
+      {isLoading && (
+        <span className="loading loading-spinner loading-lg"></span>
+      )}
+
       {todos?.map((todo) => (
-        <p key={todo.id}>{todo.name}</p>
+        <p className="text-3xl" key={todo.id}>
+          {todo.name}
+        </p>
       ))}
     </section>
   );
